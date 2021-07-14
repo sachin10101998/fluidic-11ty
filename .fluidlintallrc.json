@@ -4,7 +4,12 @@
             "includes": ["./.eleventy.js"]
         }
     },
+    "lintspaces": {
+        "jsonindentation": {
+            "excludes": ["./src/_data/*.json"]
+        }
+    },
     "markdownlint": {
-        "excludes": ["./CHANGELOG.md"]
+        "excludes": ["./src/collections/**/*.md", "./CHANGELOG.md"]
     }
 }

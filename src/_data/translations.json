@@ -1,0 +1,14 @@
+{
+    "fr-CA": {
+        "posts": "articles",
+        "post": "article",
+        "%s RSS feed": "Flux RSS %s",
+        "The most recent posts from %s": "Les articles les plus récents de %s"
+    },
+    "en-CA": {
+        "posts": "posts",
+        "post": "post",
+        "%s RSS feed": "%s RSS feed",
+        "The most recent posts from %s": "The most recent posts from %s"
+    }
+}

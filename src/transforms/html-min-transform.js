@@ -14,7 +14,7 @@ https://github.com/fluid-project/trivet/raw/main/LICENSE.md.
 const htmlmin = require("html-minifier");
 
 module.exports = function htmlMinTransform(value, outputPath) {
-    if (outputPath.indexOf(".html") > -1) {
+    if (outputPath && outputPath.endsWith(".html")) {
         let minified = htmlmin.minify(value, {
             useShortDoctype: true,
             removeComments: true,

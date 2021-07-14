@@ -1,10 +1,18 @@
             <nav class="nav" id="menu" aria-label="menu">
                 <ul>
-                    {% set navItems = collections.all | eleventyNavigation %}
+                    {% set navItems = collections.all | eleventyNavigation(lang) %}
                     {% for item in navItems %}
                     <li>
                         <a href="{{ item.url | url }}"{% if item.url == page.url %} aria-current="page"{% endif %}>{{ item.title }}</a>
                     </li>
+                    {% endfor %}
+                    {% for item in collections.all %}
+                        {# Find an item with a translation key which matches the current page's translation key but is not the same language. #}
+                        {% if item.data.translationKey == translationKey and item.data.lang !== lang %}
+                        <li lang="{{ item.data.lang }}">
+                            <a href="{{ item.url }}">{{ config.languages | getSiblingValue("code", item.data.lang, "name") }}</a>
+                        </li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </nav>

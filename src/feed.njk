@@ -1,22 +1,26 @@
 ---
-title: posts
-summary: The most recent posts from
-permalink: '/feed.xml'
+pagination:
+  data: config.languages
+  size: 1
+  alias: language
+permalink: "{% if language.code !== config.languages[0].code %}/{{ language.code.split('-')[0] }}{% endif %}/feed.xml"
 ---
+{% set lang = language.code %}
+{% set collection = "postFeed_" + lang %}
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-    <title>{{ site.name }} {{ title }}</title>
-    <subtitle>{{ summary }} {{ site.name }}</subtitle>
-    <link href="{{ site.url }}{{ permalink }}" rel="self"/>
-    <link href="{{ site.url }}/"/>
-    <updated>{{ collections.postFeed | rssLastUpdatedDate }}</updated>
-    <id>{{ site.url }}</id>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="{{ lang }}">
+    <title>{{ site[lang].name }}</title>
+    <subtitle>{{ translations[lang][summary] | replace("%s", site[lang].name) }}</subtitle>
+    <link href="{{ config.url }}{% if lang !== config.languages[0].code %}/{{ lang }}{% endif %}/feed.xml" rel="self"/>
+    <link href="{{ config.url }}{% if lang !== config.languages[0].code %}/{{ lang }}{% endif %}"/>
+    <updated>{{ collections[collection] | rssLastUpdatedDate }}</updated>
+    <id>{{ config.url }}</id>
     <author>
-        <name>{{ site.authorName }}</name>
-        <email>{{ site.authorEmail }}</email>
+        <name>{{ site[lang].authorName }}</name>
+        <email>{{ site[lang].authorEmail }}</email>
     </author>
-    {% for post in collections.postFeed %}
-        {% set absolutePostUrl %}{{ site.url }}{{ post.url | url }}{% endset %}
+    {% for post in collections[collection] %}
+        {% set absolutePostUrl %}{{ config.url }}{{ post.url | url }}{% endset %}
     <entry>
         <title>{{ post.data.title }}</title>
         <link href="{{ absolutePostUrl }}"/>

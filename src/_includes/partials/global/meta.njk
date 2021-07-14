@@ -1,0 +1,7 @@
+    <meta name="description" content="{{ site[lang].description }}">
+    <meta property="og:title" content="{% if title %} {{ title }} | {% endif %} {{ site[lang].name }}">
+    <meta property="og:description" content="{{ site[lang].description }}">
+    <meta property="og:locale" content="{{ lang | replace("-", "_") }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ config.url }}{{ page.url }}">
+    <link rel="canonical" href="{{ config.url }}{{ page.url }}">

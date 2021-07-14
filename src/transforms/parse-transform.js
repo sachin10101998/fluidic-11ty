@@ -15,7 +15,7 @@ https://github.com/fluid-project/trivet/raw/main/LICENSE.md.
 const {parseHTML} = require("linkedom");
 
 module.exports = function (value, outputPath) {
-    if (outputPath && outputPath.includes(".html")) {
+    if (outputPath && outputPath.endsWith(".html")) {
         let {document} = parseHTML(value);
         const articleImages = [...document.querySelectorAll("main article img")];
 

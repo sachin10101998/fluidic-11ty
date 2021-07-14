@@ -1,0 +1,86 @@
+---
+permalink: /admin/config.yml
+---
+backend:
+  name: git-gateway
+  branch: main
+media_folder: "src/assets/uploads"
+public_folder: "/assets/uploads"
+
+# Run "npx netlify-cms-proxy-server" for local backend
+local_backend: true
+editor:
+  preview: false
+i18n:
+  structure: multiple_folders
+  locales: [{% for language in config.languages %}{{language.code}}{% if loop.last !== true %}, {% endif %}{% endfor %}]
+  default_locale: {{ config.languages[0].code }}
+collections:
+  - label: "Posts"
+    label_singular: "Post"
+    name: "post"
+    i18n: true
+    folder: "src/collections/posts/"
+    extension: "md"
+    create: true
+    fields:
+      - { label: "Title", name: "title", widget: "string", i18n: true }
+      - { label: "Excerpt", name: "excerpt", widget: "string", required: false, i18n: true }
+      - { label: "Author", name: "author", widget: "string", i18n: true }
+      - { label: "Publication Date", name: "date", widget: "datetime", i18n: duplicate }
+      - { label: "Body", name: "body", widget: "markdown", i18n: true }
+  - label: "Pages"
+    label_singular: "Page"
+    name: "page"
+    i18n: true
+    folder: "src/collections/pages/"
+    extension: "md"
+    create: true
+    fields:
+      - { label: "Title", name: "title", widget: "string", i18n: true }
+      - { label: "Navigation Order", name: "order", widget: "number", min: 0, i18n: duplicate }
+      - { label: "Navigation Label", name: "key", widget: "string", required: false, i18n: true }
+      - { label: "Excerpt", name: "excerpt", widget: "string", required: false, i18n: true }
+      - { label: "Body", name: "body", widget: "markdown", i18n: true }
+  - label: "Site Configuration"
+    name: "config"
+    i18n: false
+    files:
+      - label: "Site Configuration"
+        name: "config"
+        file: "src/_data/config.json"
+        fields:
+          - { label: URL, name: url, widget: string }
+          - { label: "Maximum Posts in RSS Feed", name: maxPostsInFeed, widget: number, min: 1, i18n: false }
+          - label: Languages
+            label_singular: Language
+            name: languages
+            widget: list
+            i18n: false
+            hint: "The first language will be the site's default language. To change the default, reorder the languages above."
+            fields:
+              - { label: "Language Name", name: "name", widget: string, hint: "The language's name in the language (endonym). For example, English, français or فارسی." }
+              - { label: Code, name: code, widget: string }
+              - label: Direction
+                name: dir
+                widget: select
+                default: "ltr"
+                options:
+                - { label: "Left to right", value: "ltr" }
+                - { label: "Right to left", value: "rtl" }
+  - label: "Site Data"
+    name: "data"
+    i18n:
+      structure: single_file
+    files:
+      - label: "Site Data"
+        name: "site"
+        file: "src/_data/site.json"
+        i18n: true
+        fields:
+          - { label: Name, name: name, widget: string, i18n: true }
+          - { label: Description, name: description, widget: text, i18n: true }
+          - { label: "Author Name", name: authorName, widget: string, i18n: true }
+          - { label: "Author Email", name: authorEmail, widget: string, i18n: duplicate }
+          - { label: "Author Website", name: authorWebsite, widget: string, i18n: duplicate }
+          

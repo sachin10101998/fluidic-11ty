@@ -1,15 +1,21 @@
 <!doctype html>
-<html lang="en-ca" dir="ltr">
+<html lang="{{ lang }}" dir="{{ config.languages | getSiblingValue("code", lang, "dir") }}">
     <head>
-        <title>{% if title %} {{ title }} {% else %} {{ site.title }} {% endif %}</title>
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-        <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <link rel="manifest" href="/manifest.webmanifest">
-        <link rel="alternate" type="application/atom+xml" href="{{ site.url }}/feed.xml" title="{{ site.title }}">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+
+        <title>{% if title %} {{ title }} | {% endif %} {{ site[lang].name }}</title>
+
+        {% include "partials/global/stylesheets.njk" %}
+
+        {% include "partials/global/meta.njk" %}
+        <link rel="alternate" type="application/atom+xml" href="{{ config.url }}{% if lang !== config.languages[0].code %}/{{ lang }}{% endif %}/feed.xml" title="{{ translations[lang]["%s RSS feed"] | replace("%s", site[lang].name) }}">
+        
         {% include "partials/global/icons.njk" %}
+        <link rel="manifest" href="/manifest.webmanifest">
+        
         <script type="text/javascript" src="{{ '/' | url }}lib/infusion/infusion-uio.min.js"></script>
         {% include "partials/global/scripts.njk" %}
-        {% include "partials/global/stylesheets.njk" %}
     </head>
     <body class="{{ bodyClass if bodyClass else "page" }}">
         {% uioTemplate %}
@@ -30,6 +36,51 @@
             </article>
         </main>
         {% include "partials/global/footer.njk" %}
-        {% uioInit %}
+        {# {% uioInit %} #}
+        <script>
+        fluid.defaults("fluid.uiOptions.multilingual", {
+            gradeNames: ["fluid.uiOptions"],
+            distributeOptions: {
+                source: "{that}.options.locale",
+                target: "{that messageLoader}.options.resourceOptions.locale"
+            },
+            listeners: {
+                "onPrefsEditorReady.addLanguageAttributesToBody": {
+                    func: "fluid.uiOptions.multilingual.addLanguageAttributesToBody",
+                    args: ["{that}.prefsEditorLoader.prefsEditor.container", "{that}.options.locale", "{that}.options.direction"]
+                }
+            }
+        });
+        
+        /**
+        * Adds the locale and direction to the BODY in the IFRAME to enable CSS
+        * based on the locale and direction
+        *
+        * @param {jQuery} prefsEditorContainer - the DOM container for UIO
+        * @param {String} locale - the locale to apply
+        * @param {String} direction - the text orientation to apply
+        */
+        fluid.uiOptions.multilingual.addLanguageAttributesToBody = function (prefsEditorContainer, locale, direction) {
+            prefsEditorContainer.attr("lang", locale);
+            prefsEditorContainer.attr("dir", direction);
+        };
+
+        fluid.uiOptions.multilingual(".flc-prefsEditor-separatedPanel", {
+            auxiliarySchema: {
+                terms: {
+                    "templatePrefix": "/lib/infusion/src/framework/preferences/html",
+                    "messagePrefix": "/lib/infusion/src/framework/preferences/messages"
+                },
+                "fluid.prefs.tableOfContents": {
+                    enactor: {
+                        "tocTemplate": "/lib/infusion/src/components/tableOfContents/html/TableOfContents.html",
+                        "tocMessage": "/lib/infusion/src/framework/preferences/messages/tableOfContents-enactor.json"
+                    }
+                }
+            },
+            locale: "{{ lang | truncate(2, true, '') }}",
+            direction: "{{ config.languages | getSiblingValue("code", lang, "dir") }}"
+        });
+        </script>
     </body>
 </html>

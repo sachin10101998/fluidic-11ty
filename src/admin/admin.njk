@@ -1,0 +1,23 @@
+---
+permalink: '/admin/index.html'
+---
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Content Manager | {{ site["en-CA"].name }}</title>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  </head>
+  <body>
+    <!-- Include the script that builds the page and powers Netlify CMS -->
+    <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+    {% if env.context === "dev" %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.14.0/umd/react.development.js" integrity="sha512-LVEAOXGRRqHiT+4awmHwL5emvXg+BTr8cC/eDF0pLuwEySgG55Pt2gfN2X6BenCsocmb2kKJ7QJVppWftFpcoA==" crossorigin="anonymous"></script>
+    {% else %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.14.0/umd/react.production.min.js" integrity="sha512-2YCEuA9o4l9bZd4vpYo2iGMrg3fJ/2SHrPPnYwpXiIegB7i0eAroKyhlR20jxPXhlFXPYPzIyc0e2pTWv2eSpA==" crossorigin="anonymous"></script>
+    {% endif %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.6.0/prop-types.min.js" integrity="sha512-iaZEn6GbaeyZUTxmuWpJzdTzOurbAb/sPnWAxWcPhkVOffSkF9jyOPqcNsr1yhGI+zIF9Lm4xdr/MsGFl3tObQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nunjucks/3.0.1/nunjucks-slim.min.js" integrity="sha512-Le2QHLCeUlEbm3gHNGx122kY+m/XSgcZOIQdRyA/xcMLaHXLDB+5MCzL3aAxgT/dkMkwaBeiNbigjjssl7mYHw==" crossorigin="anonymous"></script>
+  </body>
+</html>
